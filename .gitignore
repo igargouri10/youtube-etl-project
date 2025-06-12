@@ -1,0 +1,12 @@
+# Ignore virtual environment
+.venv/
+
+# Ignore database and raw data
+data/*.db
+data/raw/
+
+# Ignore logs and system files
+*.log
+etl_log.txt
+__pycache__/
+*.pyc
