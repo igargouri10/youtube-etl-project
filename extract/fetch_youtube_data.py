@@ -1,8 +1,13 @@
+import os
+from pathlib import Path
+
 import pandas as pd
 from googleapiclient.discovery import build
 
 # === CONFIGURATION ===
-API_KEY = "AIzaSyAt5bKJqIzVpiis4ZGznKiLMEPI0DMt-jg"  # YouTube Data API key
+API_KEY = os.environ.get("YOUTUBE_API_KEY", "").strip()
+if not API_KEY:
+    raise RuntimeError("Set YOUTUBE_API_KEY to a new, restricted YouTube Data API key.")
 CHANNEL_ID = "UC_x5XG1OV2P6uZZ5FSM9Ttw"  # Example: Google Developers
 
 youtube = build("youtube", "v3", developerKey=API_KEY)
@@ -47,5 +52,6 @@ if __name__ == "__main__":
     df = pd.DataFrame(videos)
     df["channel_title"] = channel["channel_title"]
     
+    Path("data/raw").mkdir(parents=True, exist_ok=True)
     df.to_csv("data/raw/youtube_videos.csv", index=False)
     print("✅ Data saved to data/raw/youtube_videos.csv")
